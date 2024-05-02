@@ -3,7 +3,7 @@
 pragma solidity ^0.8.0;
 
 contract Halo2Verifier {
-    uint256 internal constant    PROOF_LEN_CPTR = {{ proof_cptr - 1 }};
+    uint256 internal constant    PROOF_LEN_CPTR = {{ proof_len_cptr }};
     uint256 internal constant        PROOF_CPTR = {{ proof_cptr }};
     uint256 internal constant NUM_INSTANCE_CPTR = {{ proof_cptr + (proof_len / 32) }};
     uint256 internal constant     INSTANCE_CPTR = {{ proof_cptr + (proof_len / 32) + 1 }};
@@ -235,7 +235,7 @@ contract Halo2Verifier {
                 {%- endmatch %}
 
                 // Check valid length of proof
-                success := and(success, eq({{ proof_len|hex() }}, calldataload(PROOF_LEN_CPTR)))
+                success := and(success, eq({{ proof_len|hex() }}, calldataload(sub(PROOF_LEN_CPTR, 0x6014F51900))))
 
                 // Check valid length of instances
                 let num_instances := mload(NUM_INSTANCES_MPTR)

@@ -235,6 +235,8 @@ impl<'a> SolidityGenerator<'a> {
     fn generate_verifier(&self, separate: bool) -> Halo2Verifier {
         let proof_cptr = Ptr::calldata(if separate { 0x84 } else { 0x64 });
 
+        let proof_len_cptr = Ptr::calldata(if separate { 0x6014F51964 } else { 0x6014F51944 });
+
         let vk = self.generate_vk();
         let vk_len = vk.len();
         let vk_mptr = Ptr::memory(self.estimate_static_working_memory_size(&vk, proof_cptr));
@@ -276,6 +278,7 @@ impl<'a> SolidityGenerator<'a> {
             num_evals: self.meta.num_evals,
             num_quotients: self.meta.num_quotients,
             proof_cptr,
+            proof_len_cptr,
             quotient_comm_cptr: data.quotient_comm_cptr,
             proof_len: self.meta.proof_len(self.scheme),
             challenge_mptr: data.challenge_mptr,

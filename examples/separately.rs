@@ -1,6 +1,7 @@
 use application::StandardPlonk;
 use prelude::*;
 
+use halo2_proofs::poly::commitment::Params;
 use halo2_solidity_verifier::{
     compile_solidity, encode_calldata, BatchOpenScheme::Bdfg21, Evm, Keccak256Transcript,
     SolidityGenerator,
@@ -107,6 +108,7 @@ fn create_proof_checked(
             SingleStrategy::new(params),
             &[&[instances]],
             &mut transcript,
+            params.n(),
         )
     };
     assert!(result.is_ok());
